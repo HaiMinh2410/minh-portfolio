@@ -40,6 +40,7 @@ The content is organized as follows:
 </file_summary>
 
 <directory_structure>
+.github/workflows/static.yml
 .gitignore
 package.json
 src/asset/css/font.css
@@ -50,12 +51,15 @@ src/asset/css/webflow.css
 src/asset/js/1fe6c3bf61bf01e6.js
 src/asset/js/3e8ad2a3dd94f51d.js
 src/asset/js/main.js
+src/asset/js/utils/slug.js
+src/data/home.js
+src/data/projects.js
 src/layouts/main.hbs
-src/pages/about.html
-src/pages/contact.html
+src/pages/about/index.html
+src/pages/contact/index.html
 src/pages/index.html
-src/pages/project.html
-src/pages/works.html
+src/pages/project/index.html
+src/pages/works/index.html
 src/partials/layouts/footer.hbs
 src/partials/layouts/navbar.hbs
 src/partials/sections/about/about-hero.hbs
@@ -71,6 +75,52 @@ vite.config.js
 
 <files>
 This section contains the contents of the repository's files.
+
+<file path=".github/workflows/static.yml">
+# Simple workflow for deploying static content to GitHub Pages
+name: Deploy static content to Pages
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # Single deploy job since we're just deploying
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload entire repository
+          path: '.'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+</file>
 
 <file path=".gitignore">
 # Logs
@@ -35040,6 +35090,84 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </file>
 
+<file path="src/asset/js/utils/slug.js">
+export const generateSlug = (name) => {
+  if (!name) return "";
+  return name.toLowerCase()
+    .trim()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Loại bỏ dấu tiếng Việt
+    .replace(/\s+/g, '-')       // Thay thế khoảng trắng bằng gạch ngang
+    .replace(/[^\w-]+/g, '')    // Loại bỏ ký tự không phải chữ, số, gạch ngang
+    .replace(/--+/g, '-')       // Thay thế nhiều gạch ngang bằng một gạch ngang
+    .replace(/^-+/, '')         // Cắt gạch ngang ở đầu
+    .replace(/-+$/, '');        // Cắt gạch ngang ở cuối
+};
+</file>
+
+<file path="src/data/home.js">
+import { projects } from './projects.js';
+
+export const homeData = {
+  projects: projects // Lấy danh sách dự án
+};
+</file>
+
+<file path="src/data/projects.js">
+import { generateSlug } from "../asset/js/utils/slug";
+
+export const projects = [
+  {
+    name: "Up Dental",
+    category: "Web Design",
+    date: "August 30, 2025",
+    liveUrl: "https://up-dental.com",
+    description: "Whether you need design or tweak some code, I have the skills and creativity needed to take your project to the next level.",
+    bodyItems: [
+      { image: "/Screenshot 2025-08-30 224405.png" },
+      // Thêm các ảnh khác nếu cần
+    ]
+  },
+  {
+    name: "Donut SaiGon",
+    category: "Graphic Design",
+    date: "August 26, 2025",
+    liveUrl: "https://donutsaigon.vn",
+    description: "Creative and detail-oriented branding project focusing on a modern, fun aesthetic for a local food brand.",
+    bodyItems: [
+      { image: "/Screenshot 2025-08-26 222751.png" },
+      { image: "/Screenshot 2025-08-26 222751.png" },
+    ]
+  },
+  {
+    name: "Happy Care",
+    category: "Graphic Design",
+    date: "August 20, 2025",
+    liveUrl: "https://happycare.co",
+    description: "Developing a friendly and trustworthy visual identity system for a healthcare startup.",
+    bodyItems: [
+      { image: "/image.png" },
+      { image: "/image.png" },
+      { image: "/image.png" },
+    ]
+  },
+  {
+    name: "Shoppe Food",
+    category: "Shipper",
+    date: "July 10, 2025",
+    liveUrl: "https://shoppefood.vn",
+    description: "Optimization of the rider experience on the Shoppe Food delivery app.",
+    bodyItems: [
+      { image: "/81347517cc94993b7e30db16f9b7cb02.jpg" },
+    ]
+  }
+];
+
+// Gán slug cho từng dự án
+projects.forEach(project => {
+  project.slug = generateSlug(project.name);
+});
+</file>
+
 <file path="src/layouts/main.hbs">
 <!DOCTYPE html>
 <html 
@@ -35480,31 +35608,22 @@ document.addEventListener("DOMContentLoaded", function () {
 </html>
 </file>
 
-<file path="src/pages/about.html">
-{{#>main dataPage="68b1b87bc65c6c6d1cecfb97"}}
+<file path="src/pages/about/index.html">
+{{#>main dataPage=dataPage}}
   {{> sections/about/about-hero}} 
   {{> sections/about/about-story}} 
 {{/main}}
 </file>
 
-<file path="src/pages/contact.html">
-{{#>main dataPage="68b1b87bc65c6c6d1cecfba2"}}
+<file path="src/pages/contact/index.html">
+{{#>main dataPage=dataPage}}
   {{> sections/contact/contact-form}} 
   {{> sections/contact/contact-question}} 
 {{/main}}
 </file>
 
-<file path="src/pages/index.html">
-{{#>main dataPage="68b1b87bc65c6c6d1cecfb8f" pageTitle="Hai Minh – Creative Developer & Designer"}}
-  {{> sections/home/home-hero}} 
-  {{> sections/home/home-exp}} 
-  {{> sections/home/home-works}} 
-  {{> sections/home/home-service}} 
-{{/main}}
-</file>
-
-<file path="src/pages/project.html">
-{{#>main dataPage="68b1b87bc65c6c6d1cecfb9a"}}
+<file path="src/pages/project/index.html">
+{{#>main dataPage=dataPage }}
   <section class="section-work-hero">
     <div class="padding-horizontal padding-small">
       <div>
@@ -35513,11 +35632,10 @@ document.addEventListener("DOMContentLoaded", function () {
             id="w-node-_811293e2-1bc5-b0a6-a195-608f0fa9fc65-1cecfb9a"
             class="work-hero_intro"
           >
-            <h1 class="heading-style-h1">Airtable</h1>
+            <h1 class="heading-style-h1">{{project.name}}</h1>
             <div class="work-body_descript">
               <p class="text-size-regular text-align-center text-style-muted">
-                Whether you need design or tweak some code, I have the skills and
-                creativity needed to take your project to the next level.
+                {{project.description}}
               </p>
             </div>
           </div>
@@ -35557,17 +35675,18 @@ document.addEventListener("DOMContentLoaded", function () {
       <div class="padding-horizontal padding-large">
         <div class="padding-vertical padding-xlarge">
           <div class="work-body_details">
-            <div class="text-size-tiny text-style-allcaps">Graphic design</div>
+            <div class="text-size-tiny text-style-allcaps">{{project.category}}</div>
             <div
               id="w-node-_074cc14b-26f4-e1d4-faab-6eedf466c5ea-1cecfb9a"
               class="text-size-tiny text-style-allcaps"
             >
-              June 21, 2023
+              {{project.date}}
             </div>
             <a
               id="w-node-_74b25528-8e75-f630-89e7-d5815cd7d424-1cecfb9a"
               data-w-id="74b25528-8e75-f630-89e7-d5815cd7d424"
-              href="#"
+              href="{{project.liveUrl}}"
+              target="_blank"
               class="hyperlink w-inline-block"
               ><div class="text-size-tiny text-style-allcaps">
                 View live project
@@ -35610,65 +35729,29 @@ document.addEventListener("DOMContentLoaded", function () {
           <div>
             <div class="work-body_component">
               <div class="w-dyn-list">
+                {{! Script template là Webflow CMS Template, nên giữ lại nếu cần Webflow JS}}
                 <script
                   type="text/x-wf-template"
                   id="wf-template-05edfdc2-0e21-ef8c-bf97-8d17801fe344"
                 >
-                  %3Cdiv%20role%3D%22listitem%22%20class%3D%22w-dyn-item%20w-dyn-repeater-item%22%3E%3Cdiv%20id%3D%22w-node-bf9de591-1104-d543-6b28-ee8c4f4ccb7a-1cecfb9a%22%20class%3D%22work-body_item%20radius-regular%22%3E%3Cimg%20loading%3D%22lazy%22%20alt%3D%22%22%20src%3D%22https%3A%2F%2Fcdn.prod.website-files.com%2F68b1b87bc65c6c6d1cecfbb4%2F68b1b87bc65c6c6d1cecfbb8_Placeholder-Image.svg%22%20class%3D%22work-body_image%22%2F%3E%3C%2Fdiv%3E%3C%2Fdiv%3E
+                  %3Cdiv%20role%3D%22listitem%22%20class%3D%22w-dyn-item%20w-dyn-repeater-item%22%3E%3Cdiv%20id%3D%22w-node-bf9de591-1104-d543-6b28-ee8c4f4ccb7a-1cecfb9a%22%20class%3D%22work-body_item%20radius-regular%22%3E%3Cimg%20loading%3D%22lazy%22%20alt%3D%22Project%20Image%22%20src%3D%22%7B%7Bimage%7D%7D%22%20class%3D%22work-body_image%22%2F%3E%3C%2Fdiv%3E%3C%2Fdiv%3E
                 </script>
                 <div role="list" class="work-body_list w-dyn-items">
-                  <div role="listitem" class="w-dyn-item w-dyn-repeater-item">
-                    <div
-                      id="w-node-bf9de591-1104-d543-6b28-ee8c4f4ccb7a-1cecfb9a"
-                      class="work-body_item radius-regular"
-                    >
-                      <img
-                        loading="lazy"
-                        alt=""
-                        src="https://cdn.prod.website-files.com/68b1b87bc65c6c6d1cecfbb4/68b1b87bc65c6c6d1cecfbb8_Placeholder-Image.svg"
-                        class="work-body_image"
-                      />
+                  {{#each project.bodyItems}}
+                    <div role="listitem" class="w-dyn-item w-dyn-repeater-item">
+                      <div
+                        id="w-node-bf9de591-1104-d543-6b28-ee8c4f4ccb7a-1cecfb9a"
+                        class="work-body_item radius-regular"
+                      >
+                        <img
+                          loading="lazy"
+                          alt="Project Image"
+                          src="{{this.image}}"
+                          class="work-body_image"
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div role="listitem" class="w-dyn-item w-dyn-repeater-item">
-                    <div
-                      id="w-node-bf9de591-1104-d543-6b28-ee8c4f4ccb7a-1cecfb9a"
-                      class="work-body_item radius-regular"
-                    >
-                      <img
-                        loading="lazy"
-                        alt=""
-                        src="https://cdn.prod.website-files.com/68b1b87bc65c6c6d1cecfbb4/68b1b87bc65c6c6d1cecfbb8_Placeholder-Image.svg"
-                        class="work-body_image"
-                      />
-                    </div>
-                  </div>
-                  <div role="listitem" class="w-dyn-item w-dyn-repeater-item">
-                    <div
-                      id="w-node-bf9de591-1104-d543-6b28-ee8c4f4ccb7a-1cecfb9a"
-                      class="work-body_item radius-regular"
-                    >
-                      <img
-                        loading="lazy"
-                        alt=""
-                        src="https://cdn.prod.website-files.com/68b1b87bc65c6c6d1cecfbb4/68b1b87bc65c6c6d1cecfbb8_Placeholder-Image.svg"
-                        class="work-body_image"
-                      />
-                    </div>
-                  </div>
-                  <div role="listitem" class="w-dyn-item w-dyn-repeater-item">
-                    <div
-                      id="w-node-bf9de591-1104-d543-6b28-ee8c4f4ccb7a-1cecfb9a"
-                      class="work-body_item radius-regular"
-                    >
-                      <img
-                        loading="lazy"
-                        alt=""
-                        src="https://cdn.prod.website-files.com/68b1b87bc65c6c6d1cecfbb4/68b1b87bc65c6c6d1cecfbb8_Placeholder-Image.svg"
-                        class="work-body_image"
-                      />
-                    </div>
-                  </div>
+                  {{/each}}
                 </div>
                 <div class="w-dyn-hide w-dyn-empty">
                   <div>No items found.</div>
@@ -35683,8 +35766,8 @@ document.addEventListener("DOMContentLoaded", function () {
 {{/main}}
 </file>
 
-<file path="src/pages/works.html">
-{{#>main dataPage="68b1b87bc65c6c6d1cecfba1"}}
+<file path="src/pages/works/index.html">
+{{#>main dataPage=dataPage}}
   <section data-w-id="ac4cfc0d-3e39-4290-be56-9510ca35bfb4" class="work-hero">
     <div class="padding-horizontal padding-small">
       <div class="grid-large">
@@ -38943,6 +39026,15 @@ document.addEventListener("DOMContentLoaded", function () {
 </section>
 </file>
 
+<file path="src/pages/index.html">
+{{#>main dataPage=dataPage pageTitle="Hai Minh – Creative Developer & Designer"}}
+  {{> sections/home/home-hero}} 
+  {{> sections/home/home-exp}} 
+  {{> sections/home/home-works}} 
+  {{> sections/home/home-service}} 
+{{/main}}
+</file>
+
 <file path="src/partials/sections/home/home-works.hbs">
 <section class="home-about">
   <div class="padding-horizontal padding-small">
@@ -38984,293 +39076,84 @@ document.addEventListener("DOMContentLoaded", function () {
                 role="list"
                 class="home-work-cms w-dyn-items"
               >
-                <div
-                  thatTextSplit="onHover"
-                  data-w-id="1942688e-2c45-8d2b-5bec-1c1493592356"
-                  role="listitem"
-                  class="w-dyn-item"
-                >
-                  <a
-                    data-w-id="54eb8553-1f76-4eab-2c33-f3a2b2f13857"
-                    href="/projects/airtable"
-                    class="work-list-item w-inline-block"
-                  ><div class="work-list-grid">
-                      <div
-                        id="nowThis"
-                        thatTextSplit="hoverTarget"
-                        base="100%"
-                        class="work-list-title w-node-_01521a5e-18ee-4a67-e5ed-a483cfb6ffb0-1cecfb8f"
-                      >
-                        <h3 class="heading-style-h3 text-color-white">
-                          Up Dental
-                        </h3>
-                      </div>
-                      <div
-                        id="nowThis"
-                        thatTextSplit="hoverTarget"
-                        base="20%"
-                        class="clip w-node-a7ada0ce-0806-a150-89a5-c3732ea87a1e-1cecfb8f"
-                      >
-                        <div class="hover-text">
-                          <div
-                            class="text-size-tiny text-style-allcaps text-color-white"
-                          >
-                            Web Design
-                          </div>
-                        </div>
-                        <div class="hover-text bottom-hover-text">
-                          <div
-                            class="text-size-tiny text-style-allcaps text-color-white"
-                          >
-                            Web Design
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        id="w-node-_24cff470-c792-5f36-a823-d03f369a595f-1cecfb8f"
-                        class="list-image"
-                      >
-                        <div class="list-image-item">
-                          <div
-                            data-w-id="d3eda697-e370-26c6-3aa2-dd1bdc02ade0"
-                            class="list-image-height"
-                          >
-                            <img
-                              loading="lazy"
-                              data-w-id="c5f91401-47e6-6701-dc02-daf3e6f613a3"
-                              alt=""
-                              src="Screenshot 2025-08-30 224405.png"
-                              class="image-fill"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="line">
-                      <div
-                        style="transform: translate3d(-100%, 0, 0);"
-                        class="line-fill"
-                      ></div></div></a>
-                </div>
-                <div
-                  thatTextSplit="onHover"
-                  data-w-id="1942688e-2c45-8d2b-5bec-1c1493592356"
-                  role="listitem"
-                  class="w-dyn-item"
-                >
-                  <a
-                    data-w-id="54eb8553-1f76-4eab-2c33-f3a2b2f13857"
-                    href="/projects/samsung"
-                    class="work-list-item w-inline-block"
-                  ><div class="work-list-grid">
-                      <div
-                        id="nowThis"
-                        thatTextSplit="hoverTarget"
-                        base="100%"
-                        class="work-list-title w-node-_01521a5e-18ee-4a67-e5ed-a483cfb6ffb0-1cecfb8f"
-                      >
-                        <h3 class="heading-style-h3 text-color-white">
-                          Donut SaiGon
-                        </h3>
-                      </div>
-                      <div
-                        id="nowThis"
-                        thatTextSplit="hoverTarget"
-                        base="20%"
-                        class="clip w-node-a7ada0ce-0806-a150-89a5-c3732ea87a1e-1cecfb8f"
-                      >
+                {{#each homeData.projects}}
+                  <div
+                    thatTextSplit="onHover"
+                    data-w-id="1942688e-2c45-8d2b-5bec-1c1493592356"
+                    role="listitem"
+                    class="w-dyn-item"
+                  >
+                    <!-- THAY ĐỔI URL Ở ĐÂY -->
+                    <a
+                      data-w-id="54eb8553-1f76-4eab-2c33-f3a2b2f13857"
+                      href="/projects/{{this.slug}}"
+                      class="work-list-item w-inline-block"
+                    ><div class="work-list-grid">
                         <div
-                          class="hover-text"
+                          id="nowThis"
+                          thatTextSplit="hoverTarget"
+                          base="100%"
+                          class="work-list-title w-node-_01521a5e-18ee-4a67-e5ed-a483cfb6ffb0-1cecfb8f"
                         >
-                          <div
-                            class="text-size-tiny text-style-allcaps text-color-white"
-                          >
-                            Graphic Design
-                          </div>
+                          <h3 class="heading-style-h3 text-color-white">
+                            {{this.name}}
+                          </h3>
                         </div>
-                        <div class="hover-text bottom-hover-text">
-                          <div
-                            class="text-size-tiny text-style-allcaps text-color-white"
-                          >
-                            Graphic Design
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        id="w-node-_24cff470-c792-5f36-a823-d03f369a595f-1cecfb8f"
-                        class="list-image"
-                      >
-                        <div class="list-image-item">
-                          <div
-                            data-w-id="d3eda697-e370-26c6-3aa2-dd1bdc02ade0"
-                            class="list-image-height"
-                          >
-                            <img
-                              loading="lazy"
-                              data-w-id="c5f91401-47e6-6701-dc02-daf3e6f613a3"
-                              alt=""
-                              src="Screenshot 2025-08-26 222751.png"
-                              class="image-fill"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="line">
-                      <div
-                        style="transform: translate3d(-100%, 0, 0);"
-                        class="line-fill"
-                      ></div></div></a>
-                </div>
-                <div
-                  thatTextSplit="onHover"
-                  data-w-id="1942688e-2c45-8d2b-5bec-1c1493592356"
-                  role="listitem"
-                  class="w-dyn-item"
-                >
-                  <a
-                    data-w-id="54eb8553-1f76-4eab-2c33-f3a2b2f13857"
-                    href="/projects/delta-airlines"
-                    class="work-list-item w-inline-block"
-                  ><div class="work-list-grid">
-                      <div
-                        id="nowThis"
-                        thatTextSplit="hoverTarget"
-                        base="100%"
-                        class="work-list-title w-node-_01521a5e-18ee-4a67-e5ed-a483cfb6ffb0-1cecfb8f"
-                      >
-                        <h3 class="heading-style-h3 text-color-white">
-                          Happy Care
-                        </h3>
-                      </div>
-                      <div
-                        id="nowThis"
-                        thatTextSplit="hoverTarget"
-                        base="20%"
-                        class="clip w-node-a7ada0ce-0806-a150-89a5-c3732ea87a1e-1cecfb8f"
-                      >
                         <div
-                          class="hover-text"
+                          id="nowThis"
+                          thatTextSplit="hoverTarget"
+                          base="20%"
+                          class="clip w-node-a7ada0ce-0806-a150-89a5-c3732ea87a1e-1cecfb8f"
                         >
-                          <div
-                            class="text-size-tiny text-style-allcaps text-color-white"
-                          >
-                            Graphic Design
+                          <div class="hover-text">
+                            <div
+                              class="text-size-tiny text-style-allcaps text-color-white"
+                            >
+                              {{this.category}}
+                            </div>
+                          </div>
+                          <div class="hover-text bottom-hover-text">
+                            <div
+                              class="text-size-tiny text-style-allcaps text-color-white"
+                            >
+                              {{this.category}}
+                            </div>
                           </div>
                         </div>
-                        <div class="hover-text bottom-hover-text">
-                          <div
-                            class="text-size-tiny text-style-allcaps text-color-white"
-                          >
-                            Graphic Design
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        id="w-node-_24cff470-c792-5f36-a823-d03f369a595f-1cecfb8f"
-                        class="list-image"
-                      >
-                        <div class="list-image-item">
-                          <div
-                            data-w-id="d3eda697-e370-26c6-3aa2-dd1bdc02ade0"
-                            class="list-image-height"
-                          >
-                            <img
-                              loading="lazy"
-                              data-w-id="c5f91401-47e6-6701-dc02-daf3e6f613a3"
-                              alt=""
-                              src="image.png"
-                              class="image-fill"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="line">
-                      <div
-                        style="transform: translate3d(-100%, 0, 0);"
-                        class="line-fill"
-                      ></div></div></a>
-                </div>
-                <div
-                  thatTextSplit="onHover"
-                  data-w-id="1942688e-2c45-8d2b-5bec-1c1493592356"
-                  role="listitem"
-                  class="w-dyn-item"
-                >
-                  <a
-                    data-w-id="54eb8553-1f76-4eab-2c33-f3a2b2f13857"
-                    href="/projects/fovera-health"
-                    class="work-list-item w-inline-block"
-                  ><div class="work-list-grid">
-                      <div
-                        id="nowThis"
-                        thatTextSplit="hoverTarget"
-                        base="100%"
-                        class="work-list-title w-node-_01521a5e-18ee-4a67-e5ed-a483cfb6ffb0-1cecfb8f"
-                      >
-                        <h3 class="heading-style-h3 text-color-white">
-                          Shoppe Food
-                        </h3>
-                      </div>
-                      <div
-                        id="nowThis"
-                        thatTextSplit="hoverTarget"
-                        base="20%"
-                        class="clip w-node-a7ada0ce-0806-a150-89a5-c3732ea87a1e-1cecfb8f"
-                      >
                         <div
-                          class="hover-text"
+                          id="w-node-_24cff470-c792-5f36-a823-d03f369a595f-1cecfb8f"
+                          class="list-image"
                         >
-                          <div
-                            class="text-size-tiny text-style-allcaps text-color-white"
-                          >
-                            Shipper 
-                          </div>
-                        </div>
-                        <div class="hover-text bottom-hover-text">
-                          <div
-                            class="text-size-tiny text-style-allcaps text-color-white"
-                          >
-                            Shipper =)
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        id="w-node-_24cff470-c792-5f36-a823-d03f369a595f-1cecfb8f"
-                        class="list-image"
-                      >
-                        <div class="list-image-item">
-                          <div
-                            data-w-id="d3eda697-e370-26c6-3aa2-dd1bdc02ade0"
-                            class="list-image-height"
-                          >
-                            <img
-                              loading="lazy"
-                              data-w-id="c5f91401-47e6-6701-dc02-daf3e6f613a3"
-                              alt=""
-                              src="81347517cc94993b7e30db16f9b7cb02.jpg"
-                              class="image-fill"
-                            />
+                          <div class="list-image-item">
+                            <div
+                              data-w-id="d3eda697-e370-26c6-3aa2-dd1bdc02ade0"
+                              class="list-image-height"
+                            >
+                              <img
+                                loading="lazy"
+                                data-w-id="c5f91401-47e6-6701-dc02-daf3e6f613a3"
+                                alt="{{this.name}} project image"
+                                src="{{this.bodyItems.0.image}}"
+                                class="image-fill"
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="line">
-                      <div
-                        style="transform: translate3d(-100%, 0, 0);"
-                        class="line-fill"
-                      ></div></div></a>
-                </div>
+                      <div class="line">
+                        <div
+                          style="transform: translate3d(-100%, 0, 0);"
+                          class="line-fill"
+                        ></div></div></a>
+                  </div>
+                {{/each}}
               </div>
             </div>
             <div
               data-w-id="fa0d9330-b467-34c3-6a7e-e37a46349075"
               class="line line-wrap_topleft"
             >
-              <div
-                class="line-fill"
-              ></div>
+              <div class="line-fill"></div>
             </div>
           </div>
         </div>
@@ -39286,8 +39169,14 @@ import tailwindcss from "@tailwindcss/vite";
 import handlebars from "vite-plugin-handlebars";
 import { resolve } from "path";
 import glob from "fast-glob";
-import fs from 'fs';
+import fs from "fs";
+import path from "path";
+import Handlebars from "handlebars";
 
+import { projects } from "./src/data/projects.js";
+import { homeData } from './src/data/home.js';
+
+const projectSlugs = new Set(projects.map((p) => p.slug));
 // --- Logic tạo Entry Points cho Build ---
 const getEntryPoints = () => {
   const pages = glob.sync("src/pages/**/*.html");
@@ -39295,7 +39184,16 @@ const getEntryPoints = () => {
 
   pages.forEach((pagePath) => {
     let name = pagePath.replace("src/pages/", "").replace(".html", "");
+        if (name !== 'index') {
+        name = `${name}/index`; // Ví dụ: 'about' -> 'about/index'
+    }
     entryPoints[name] = resolve(__dirname, pagePath);
+  });
+
+  // Thêm các trang dự án động vào entry points
+  projects.forEach((project) => {
+    const name = `projects/${project.slug}/index`;
+    entryPoints[name] = resolve(__dirname, "src/pages/project.html");
   });
 
   return entryPoints;
@@ -39311,36 +39209,49 @@ const createDynamicPagesPlugin = (options) => {
           const contextData = options.getData(match);
           if (contextData) {
             try {
-              // ✅ TẠO INSTANCE HANDLEBARS RIÊNG BIỆT
-              // Điều này đảm bảo mỗi request đều có thể đọc được phiên bản mới nhất của partials
+              // TẠO INSTANCE HANDLEBARS RIÊNG BIỆT
               const hbs = Handlebars.create();
 
-
-
-              // ✅ ĐĂNG KÝ TẤT CẢ PARTIALS TỪ THƯ MỤC `partials`
+              // ĐĂNG KÝ TẤT CẢ PARTIALS TỪ THƯ MỤC `partials`
               const partialsDir = resolve(__dirname, "src/partials");
-              const partialFiles = fs.readdirSync(partialsDir, { recursive: true });
-              partialFiles.forEach(file => {
-                if (file.endsWith('.hbs') || file.endsWith('.html')) {
-                  const name = file.replace(/\\/g, '/').replace(/\.(hbs|html)$/, '');
-                  const content = fs.readFileSync(path.join(partialsDir, file), 'utf8');
+              const partialFiles = fs.readdirSync(partialsDir, {
+                recursive: true,
+              });
+              partialFiles.forEach((file) => {
+                if (file.endsWith(".hbs") || file.endsWith(".html")) {
+                  const name = file
+                    .replace(/\\/g, "/")
+                    .replace(/\.(hbs|html)$/, "");
+                  const content = fs.readFileSync(
+                    path.join(partialsDir, file),
+                    "utf8"
+                  );
                   hbs.registerPartial(name, content);
                 }
               });
 
-              // ✅ ĐĂNG KÝ LAYOUT `main`
-              const layoutContent = fs.readFileSync(resolve(__dirname, 'src/layouts/main.hbs'), 'utf8');
-              hbs.registerPartial('main', layoutContent);
+              // ĐĂNG KÝ LAYOUT `main`
+              const layoutContent = fs.readFileSync(
+                resolve(__dirname, "src/layouts/main.hbs"),
+                "utf8"
+              );
+              hbs.registerPartial("main", layoutContent);
 
               // Đọc và biên dịch template bằng instance đã được cấu hình
-              const templateContent = fs.readFileSync(options.templatePath, 'utf-8');
-              const template = hbs.compile(templateContent); // Dùng `hbs.compile`
+              const templateContent = fs.readFileSync(
+                options.templatePath,
+                "utf-8"
+              );
+              const template = hbs.compile(templateContent);
 
               const finalHtml = template(contextData);
-              const renderedHtml = await server.transformIndexHtml(req.url, finalHtml);
+              const renderedHtml = await server.transformIndexHtml(
+                req.url,
+                finalHtml
+              );
 
               res.statusCode = 200;
-              res.setHeader('Content-Type', 'text/html');
+              res.setHeader("Content-Type", "text/html");
               res.end(renderedHtml);
               return;
             } catch (e) {
@@ -39351,19 +39262,25 @@ const createDynamicPagesPlugin = (options) => {
         }
         next();
       });
-    }
+    },
   };
 };
+
 const dynamicProjectPages = createDynamicPagesPlugin({
-  name: 'dynamic-projects-pages',
+  name: "dynamic-projects-pages",
   regex: /^\/projects\/([a-z0-9-]+)\.html$/,
-  templatePath: resolve(__dirname, 'src/pages/project.html'),
+  templatePath: resolve(__dirname, "src/pages/project.html"),
   getData: (match) => {
     const slug = match[1];
-    const project = projects.find(d => generateSlug(d.name) === slug);
+    // Tìm dự án dựa trên slug
+    const project = projects.find((d) => d.slug === slug);
     if (!project) return null;
-    return { };
-  }
+    return {
+      project: project,
+      // dataPage là Webflow Site ID của trang project
+      dataPage: "68b1b87bc65c6c6d1cecfb9a",
+    };
+  },
 });
 
 export default defineConfig({
@@ -39381,8 +39298,20 @@ export default defineConfig({
           if (url === "/") {
             req.url = "/pages/";
           }
-          // Xử lý các đường dẫn có dạng /about, /contact...
-          else if (
+
+          // Xử lý các URL project động (không có .html)
+          if (url.startsWith("/projects/")) {
+            const slug = url
+              .substring("/projects/".length)
+              .replace(/\.html$/, "");
+            if (projectSlugs.has(slug)) {
+              // Rewrite URL để plugin dynamicProjectPages có thể bắt được
+              req.url = `/projects/${slug}.html`;
+            }
+            return next();
+          }
+          // Xử lý các trang tĩnh khác (không có .html)
+          if (
             !url.endsWith(".html") &&
             url.lastIndexOf(".") < url.lastIndexOf("/")
           ) {
@@ -39393,9 +39322,10 @@ export default defineConfig({
               url.substring(1) + ".html"
             );
             if (fs.existsSync(potentialPath)) {
-              req.url = `/pages${url}.html`;
+              req.url = `/pages/${url.substring(1)}.html`;
             }
           }
+
           next();
         });
       },
@@ -39406,6 +39336,21 @@ export default defineConfig({
         resolve(__dirname, "src/partials"),
         resolve(__dirname, "src/layouts"), // Thêm cả layouts vào đây để dễ quản lý
       ],
+    context(pagePath) {
+        if (pagePath.includes('index.html')) {
+          return { dataPage: "68b1b87bc65c6c6d1cecfb8f", homeData };
+        }
+        if (pagePath.includes('about.html')) {
+          return { dataPage: "68b1b87bc65c6c6d1cecfb97" };
+        }
+        if (pagePath.includes('works.html')) {
+          return { dataPage: "68b1b87bc65c6c6d1cecfba1" };
+        }
+        if (pagePath.includes('contact.html')) {
+          return { dataPage: "68b1b87bc65c6c6d1cecfba2" };
+        }
+        return {};
+      },
     }),
     tailwindcss(),
   ],
@@ -39427,21 +39372,7 @@ export default defineConfig({
     port: 3000,
     outDir: resolve(__dirname, "dist"),
   },
-  // Cấu hình server development
-  // Cấu hình resolve để import các file
-  resolve: {
-    alias: {
-      "@": "/src",
-    },
-  },
 
-  // Cấu hình CSS
-  css: {
-    devSourcemap: true,
-  },
-
-  // Cấu hình assets
-  assetsInclude: ["**/*.woff2", "**/*.otf", "**/*.ttf"],
 });
 </file>
 
