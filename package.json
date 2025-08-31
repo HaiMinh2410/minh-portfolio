@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "clean": "rimraf dist",
-    "build": "npm run clean && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
