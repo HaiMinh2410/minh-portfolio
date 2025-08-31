@@ -17,17 +17,26 @@ const getEntryPoints = () => {
   const entryPoints = {};
 
   pages.forEach((pagePath) => {
-    let name = pagePath.replace("src/pages/", "").replace(".html", "");
-        if (name !== 'index') {
-        name = `${name}/index`; // Ví dụ: 'about' -> 'about/index'
+    // Loại trừ template project/index.html khỏi việc build tĩnh
+    if (pagePath === 'src/pages/project/index.html') {
+      return;
     }
+    
+    let name = pagePath.replace("src/pages/", "").replace("/index.html", "").replace(".html", "");
+    if (name === 'index') {
+      // Xử lý trang chủ
+    } else if (name.endsWith('/index')) {
+      name = name.slice(0, -6);
+    }
+    
     entryPoints[name] = resolve(__dirname, pagePath);
   });
 
   // Thêm các trang dự án động vào entry points
   projects.forEach((project) => {
     const name = `projects/${project.slug}/index`;
-    entryPoints[name] = resolve(__dirname, "src/pages/project.html");
+    // SỬA ĐƯỜNG DẪN Ở ĐÂY
+    entryPoints[name] = resolve(__dirname, "src/pages/project/index.html");
   });
 
   return entryPoints;
@@ -103,7 +112,7 @@ const createDynamicPagesPlugin = (options) => {
 const dynamicProjectPages = createDynamicPagesPlugin({
   name: "dynamic-projects-pages",
   regex: /^\/projects\/([a-z0-9-]+)\.html$/,
-  templatePath: resolve(__dirname, "src/pages/project.html"),
+  templatePath: resolve(__dirname, "src/pages/project/index.html"),
   getData: (match) => {
     const slug = match[1];
     // Tìm dự án dựa trên slug
