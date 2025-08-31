@@ -128,7 +128,7 @@ const dynamicProjectPages = createDynamicPagesPlugin({
 
 export default defineConfig({
   // Thư mục gốc của dự án
-  base: '/minh-portfolio/',
+  // base: '/minh-portfolio/',  
   root: "./src",
   publicDir: "../public",
   plugins: [
@@ -180,20 +180,10 @@ export default defineConfig({
         resolve(__dirname, "src/partials"),
         resolve(__dirname, "src/layouts"), // Thêm cả layouts vào đây để dễ quản lý
       ],
-    context(pagePath) {
-        if (pagePath.includes('index.html')) {
-          return { dataPage: "68b1b87bc65c6c6d1cecfb8f", homeData };
-        }
-        if (pagePath.includes('about.html')) {
-          return { dataPage: "68b1b87bc65c6c6d1cecfb97" };
-        }
-        if (pagePath.includes('works.html')) {
-          return { dataPage: "68b1b87bc65c6c6d1cecfba1" };
-        }
-        if (pagePath.includes('contact.html')) {
-          return { dataPage: "68b1b87bc65c6c6d1cecfba2" };
-        }
-        return {};
+    context() {
+        return {
+          homeData
+        };
       },
     }),
     tailwindcss(),
