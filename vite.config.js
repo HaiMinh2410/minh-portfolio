@@ -18,12 +18,15 @@ const getEntryPoints = () => {
 
   pages.forEach((pagePath) => {
     let name = pagePath.replace("src/pages/", "").replace(".html", "");
+        if (name !== 'index') {
+        name = `${name}/index`; // Ví dụ: 'about' -> 'about/index'
+    }
     entryPoints[name] = resolve(__dirname, pagePath);
   });
 
   // Thêm các trang dự án động vào entry points
   projects.forEach((project) => {
-    const name = `projects/${project.slug}`;
+    const name = `projects/${project.slug}/index`;
     entryPoints[name] = resolve(__dirname, "src/pages/project.html");
   });
 
@@ -169,7 +172,16 @@ export default defineConfig({
       ],
     context(pagePath) {
         if (pagePath.includes('index.html')) {
-          return homeData;
+          return { dataPage: "68b1b87bc65c6c6d1cecfb8f", homeData };
+        }
+        if (pagePath.includes('about.html')) {
+          return { dataPage: "68b1b87bc65c6c6d1cecfb97" };
+        }
+        if (pagePath.includes('works.html')) {
+          return { dataPage: "68b1b87bc65c6c6d1cecfba1" };
+        }
+        if (pagePath.includes('contact.html')) {
+          return { dataPage: "68b1b87bc65c6c6d1cecfba2" };
         }
         return {};
       },
