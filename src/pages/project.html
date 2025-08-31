@@ -1,0 +1,141 @@
+{{#>main dataPage=dataPage }}
+  <section class="section-work-hero">
+    <div class="padding-horizontal padding-small">
+      <div>
+        <div class="work-hero_component">
+          <div
+            id="w-node-_811293e2-1bc5-b0a6-a195-608f0fa9fc65-1cecfb9a"
+            class="work-hero_intro"
+          >
+            <h1 class="heading-style-h1">{{project.name}}</h1>
+            <div class="work-body_descript">
+              <p class="text-size-regular text-align-center text-style-muted">
+                {{project.description}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="padding-horizontal padding-small">
+    <section class="section-work-body radius-regular">
+      <div class="projects-hero_curve">
+        <a
+          id="right"
+          href="#"
+          class="curve-link slider__next w-node-b7d4bac5-c5da-00f7-0481-7ea41223e7dc-1cecfb9a w-inline-block"
+          ><div class="curve-arrow">
+            <div class="icon w-embed">
+              <svg
+                width="420"
+                height="420"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M13.0002 16.172L18.3642 10.808L19.7782 12.222L12.0002 20L4.22217 12.222L5.63617 10.808L11.0002 16.172V4H13.0002V16.172Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </div>
+          </div>
+          <img
+            src="https://cdn.prod.website-files.com/68b1b879c65c6c6d1cecfac6/68b1b87bc65c6c6d1cecfbdd_Pre-order_curve.svg"
+            loading="lazy"
+            alt=""
+        /></a>
+      </div>
+      <div class="padding-horizontal padding-large">
+        <div class="padding-vertical padding-xlarge">
+          <div class="work-body_details">
+            <div class="text-size-tiny text-style-allcaps">{{project.category}}</div>
+            <div
+              id="w-node-_074cc14b-26f4-e1d4-faab-6eedf466c5ea-1cecfb9a"
+              class="text-size-tiny text-style-allcaps"
+            >
+              {{project.date}}
+            </div>
+            <a
+              id="w-node-_74b25528-8e75-f630-89e7-d5815cd7d424-1cecfb9a"
+              data-w-id="74b25528-8e75-f630-89e7-d5815cd7d424"
+              href="{{project.liveUrl}}"
+              target="_blank"
+              class="hyperlink w-inline-block"
+              ><div class="text-size-tiny text-style-allcaps">
+                View live project
+              </div>
+              <div class="clip">
+                <div class="hover-arrow left">
+                  <div class="icon-1x1-tiny w-embed">
+                    <svg
+                      width="420"
+                      height="420"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M13.1722 12L8.22217 7.04999L9.63617 5.63599L16.0002 12L9.63617 18.364L8.22217 16.95L13.1722 12Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </div>
+                </div>
+                <div class="hover-arrow">
+                  <div class="icon-1x1-tiny w-embed">
+                    <svg
+                      width="420"
+                      height="420"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M13.1722 12L8.22217 7.04999L9.63617 5.63599L16.0002 12L9.63617 18.364L8.22217 16.95L13.1722 12Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </div>
+                </div></div
+            ></a>
+          </div>
+          <div>
+            <div class="work-body_component">
+              <div class="w-dyn-list">
+                {{! Script template là Webflow CMS Template, nên giữ lại nếu cần Webflow JS}}
+                <script
+                  type="text/x-wf-template"
+                  id="wf-template-05edfdc2-0e21-ef8c-bf97-8d17801fe344"
+                >
+                  %3Cdiv%20role%3D%22listitem%22%20class%3D%22w-dyn-item%20w-dyn-repeater-item%22%3E%3Cdiv%20id%3D%22w-node-bf9de591-1104-d543-6b28-ee8c4f4ccb7a-1cecfb9a%22%20class%3D%22work-body_item%20radius-regular%22%3E%3Cimg%20loading%3D%22lazy%22%20alt%3D%22Project%20Image%22%20src%3D%22%7B%7Bimage%7D%7D%22%20class%3D%22work-body_image%22%2F%3E%3C%2Fdiv%3E%3C%2Fdiv%3E
+                </script>
+                <div role="list" class="work-body_list w-dyn-items">
+                  {{#each project.bodyItems}}
+                    <div role="listitem" class="w-dyn-item w-dyn-repeater-item">
+                      <div
+                        id="w-node-bf9de591-1104-d543-6b28-ee8c4f4ccb7a-1cecfb9a"
+                        class="work-body_item radius-regular"
+                      >
+                        <img
+                          loading="lazy"
+                          alt="Project Image"
+                          src="{{this.image}}"
+                          class="work-body_image"
+                        />
+                      </div>
+                    </div>
+                  {{/each}}
+                </div>
+                <div class="w-dyn-hide w-dyn-empty">
+                  <div>No items found.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+{{/main}}

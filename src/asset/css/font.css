@@ -1,0 +1,235 @@
+@font-face {
+  font-family: Satoshi;
+  src: url("../font/Satoshi/Satoshi-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Satoshi;
+  src: url("../font/Satoshi/Satoshi-BoldItalic.woff2") format("woff2");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Satoshi;
+  src: url("../font/Satoshi/Satoshi-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Satoshi;
+  src: url("../font/Satoshi/Satoshi-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Satoshi;
+  src: url("../font/Satoshi/Satoshi-MediumItalic.woff2") format("woff2");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Satoshi;
+  src: url("../font/Satoshi/Satoshi-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Satoshi;
+  src: url("../font/Satoshi/Satoshi-LightItalic.woff2") format("woff2");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Satoshi;
+  src: url("../font/Satoshi/Satoshi-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+@font-face {
+  font-family: Satoshi;
+  src: url("../font/Satoshi/Satoshi-Black.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Satoshi;
+  src: url("../font/Satoshi/Satoshi-BlackItalic.woff2") format("woff2");
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Switzer;
+  src: url("../font/Switzer/Switzer-Black.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Switzer;
+  src: url("../font/Switzer/Switzer-ExtralightItalic.woff2") format("woff2");
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Switzer;
+  src: url("../font/Switzer/Switzer-BlackItalic.woff2") format("woff2");
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Switzer;
+  src: url("../font/Switzer/Switzer-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Switzer;
+  src: url("../font/Switzer/Switzer-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Switzer;
+  src: url("../font/Switzer/Switzer-BoldItalic.woff2") format("woff2");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Switzer;
+  src: url("../font/Switzer/Switzer-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Switzer;
+  src: url("../font/Switzer/Switzer-Extralight.woff2") format("woff2");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Switzer;
+  src: url("../font/Switzer/Switzer-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Switzer;
+  src: url("../font/Switzer/Switzer-LightItalic.woff2") format("woff2");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Switzer;
+  src: url("../font/Switzer/Switzer-MediumItalic.woff2") format("woff2");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Switzer;
+  src: url("../font/Switzer/Switzer-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Switzer;
+  src: url("../font/Switzer/Switzer-Semibold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Switzer;
+  src: url("../font/Switzer/Switzer-Thin.woff2") format("woff2");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Switzer;
+  src: url("../font/Switzer/Switzer-SemiboldItalic.woff2") format("woff2");
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Switzer;
+  src: url("../font/Switzer/Switzer-ThinItalic.woff2") format("woff2");
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Optiker k;
+  src: url("https://cdn.prod.website-files.com/68b1b879c65c6c6d1cecfac6/68b1b87bc65c6c6d1cecfc71_Optiker-K.woff2")
+      format("woff2"),
+    url("https://cdn.prod.website-files.com/68b1b879c65c6c6d1cecfac6/68b1b87bc65c6c6d1cecfc6f_Optiker-K.woff")
+      format("woff"),
+    url("https://cdn.prod.website-files.com/68b1b879c65c6c6d1cecfac6/68b1b87bc65c6c6d1cecfc6e_Optiker-K.ttf")
+      format("truetype"),
+    url("https://cdn.prod.website-files.com/68b1b879c65c6c6d1cecfac6/68b1b87bc65c6c6d1cecfc70_Optiker-K.otf")
+      format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+@font-face {
+  font-family: Big river sample;
+  src: url("../font/big_river_sample.ttf")
+      format("truetype"),
+    url("../font/big_river_sample.otf")
+      format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

@@ -1,0 +1,22 @@
+{
+  "name": "portfolio",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "clean": "rimraf dist",
+    "build": "npm run clean && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^7.1.2",
+    "vite-plugin-handlebars": "^2.0.0"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.11",
+    "fast-glob": "^3.3.3",
+    "handlebars": "^4.7.8",
+    "tailwindcss": "^4.1.11"
+  }
+}
