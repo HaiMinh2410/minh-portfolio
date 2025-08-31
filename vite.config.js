@@ -128,7 +128,7 @@ const dynamicProjectPages = createDynamicPagesPlugin({
 
 export default defineConfig({
   // Thư mục gốc của dự án
-  // base: '/minh-portfolio/',  
+  base: '/minh-portfolio/',
   root: "./src",
   publicDir: "../public",
   plugins: [
@@ -140,7 +140,7 @@ export default defineConfig({
 
           // Xử lý trang chủ
           if (url === "/") {
-            req.url = "/pages/";
+            req.url = "/minh-portfolio/pages/";
           }
 
           // Xử lý các URL project động (không có .html)
@@ -163,10 +163,10 @@ export default defineConfig({
               __dirname,
               "src",
               "pages",
-              url.substring(1) + ".html"
+              url.substring(1)
             );
             if (fs.existsSync(potentialPath)) {
-              req.url = `/pages/${url.substring(1)}.html`;
+              req.url = `/minh-portfolio/pages/${url.substring(1)}/`;
             }
           }
 
