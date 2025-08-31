@@ -119,7 +119,7 @@ const dynamicProjectPages = createDynamicPagesPlugin({
 
 export default defineConfig({
   // Thư mục gốc của dự án
-  base: '/my-portfolio/',
+  base: '/minh-portfolio/',
   root: "./src",
   publicDir: "../public",
   plugins: [
