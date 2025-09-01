@@ -2031,33 +2031,27 @@ figcaption {
   display: grid;
 }
 
-.letter-1,
-.letter-2 {
-  z-index: 1;
-  display: inline-block;
-  position: relative;
-}
-
 .letter-animation {
   justify-content: center;
   align-items: center;
   display: flex;
 }
 
+.letter-1,
+.letter-2,
 .letter-3,
 .letter-4,
 .letter-5,
 .letter-6,
 .letter-7,
-.letter-8 {
+.letter-8,
+.letter-9,
+.letter-10 {
   z-index: 1;
   display: inline-block;
   position: relative;
 }
 
-.letter-9 {
-  display: inline-block;
-}
 
 .line-fill {
   background-color: var(--outline-dark);

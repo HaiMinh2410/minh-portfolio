@@ -8,40 +8,53 @@ import path from "path";
 import Handlebars from "handlebars";
 
 import { projects } from "./src/data/projects.js";
-import { homeData } from './src/data/home.js';
+import { homeData } from "./src/data/home.js";
 
+const base = "/minh-portfolio/";
 const projectSlugs = new Set(projects.map((p) => p.slug));
 // --- Logic tạo Entry Points cho Build ---
+
+const Helpers = {
+  split: (text) => {
+    if (typeof text !== "string") return [];
+    return text.split("");
+  },
+  plusOne: (value) => {
+    return value + 1;
+  },
+  isSpace: (value) => value === " ",
+  default: (value, fallback) => {
+    return value != null && value !== "" ? value : fallback;
+  },
+};
+
 const getEntryPoints = () => {
-  const pages = glob.sync("src/pages/**/*.html");
+  const pages = glob.sync("src/pages/**/*.html", {
+    // Loại trừ template gốc để nó không được build thành một trang riêng
+    ignore: ["src/pages/project/index.html"],
+  });
+
   const entryPoints = {};
 
   pages.forEach((pagePath) => {
-    // Loại trừ template project/index.html khỏi việc build tĩnh
-    if (pagePath === 'src/pages/project/index.html') {
-      return;
-    }
-    
-    let name = pagePath.replace("src/pages/", "").replace("/index.html", "").replace(".html", "");
-    if (name === 'index') {
-      // Xử lý trang chủ
-    } else if (name.endsWith('/index')) {
+    let name = pagePath
+      .replace(/^src\/pages\//, "") // bỏ luôn "pages/"
+      .replace(/index\.html$/, "") // xóa index.html
+      .replace(/\.html$/, "") // xóa .html
+      .replace(/\/$/, "");
+
+    // Xử lý trang chủ
+    if (name === "index") {
+      name = "index";
+    } else if (name.endsWith("/index")) {
       name = name.slice(0, -6);
     }
-    
-    entryPoints[name] = resolve(__dirname, pagePath);
-  });
 
-  // Thêm các trang dự án động vào entry points
-  projects.forEach((project) => {
-    const name = `projects/${project.slug}/index`;
-    // SỬA ĐƯỜNG DẪN Ở ĐÂY
-    entryPoints[name] = resolve(__dirname, "src/pages/project/index.html");
+    entryPoints[name] = resolve(__dirname, pagePath);
   });
 
   return entryPoints;
 };
-
 const createDynamicPagesPlugin = (options) => {
   return {
     name: options.name,
@@ -54,7 +67,9 @@ const createDynamicPagesPlugin = (options) => {
             try {
               // TẠO INSTANCE HANDLEBARS RIÊNG BIỆT
               const hbs = Handlebars.create();
-
+              Object.entries(Helpers).forEach(([name, fn]) => {
+                hbs.registerHelper(name, fn);
+              });
               // ĐĂNG KÝ TẤT CẢ PARTIALS TỪ THƯ MỤC `partials`
               const partialsDir = resolve(__dirname, "src/partials");
               const partialFiles = fs.readdirSync(partialsDir, {
@@ -108,27 +123,25 @@ const createDynamicPagesPlugin = (options) => {
     },
   };
 };
-
 const dynamicProjectPages = createDynamicPagesPlugin({
   name: "dynamic-projects-pages",
-  regex: /^\/projects\/([a-z0-9-]+)\.html$/,
+  regex: /^\/projects\/([a-z0-9-]+)\.html$|^\/minh-portfolio\/projects\/([a-z0-9-]+)\/?$/,
   templatePath: resolve(__dirname, "src/pages/project/index.html"),
   getData: (match) => {
-    const slug = match[1];
-    // Tìm dự án dựa trên slug
+    const slug = match[1] || match[2]; // Lấy slug từ một trong hai group bắt được
     const project = projects.find((d) => d.slug === slug);
     if (!project) return null;
     return {
       project: project,
-      // dataPage là Webflow Site ID của trang project
       dataPage: "68b1b87bc65c6c6d1cecfb9a",
+      baseUrl: base, // Thêm baseUrl vào context
     };
   },
 });
 
 export default defineConfig({
   // Thư mục gốc của dự án
-  base: '/minh-portfolio/',
+  base: base,
   root: "./src",
   publicDir: "../public",
   plugins: [
@@ -142,7 +155,6 @@ export default defineConfig({
           if (url === "/") {
             req.url = "/minh-portfolio/pages/";
           }
-
           // Xử lý các URL project động (không có .html)
           if (url.startsWith("/projects/")) {
             const slug = url
@@ -154,19 +166,23 @@ export default defineConfig({
             }
             return next();
           }
-          // Xử lý các trang tĩnh khác (không có .html)
           if (
             !url.endsWith(".html") &&
             url.lastIndexOf(".") < url.lastIndexOf("/")
           ) {
+            // Bỏ tiền tố "/minh-portfolio/"
+            const relativePath = url.replace(/^\/minh-portfolio\//, "");
+            console.log("URL gốc:", url);
+            console.log("Relative path:", relativePath);
+
             const potentialPath = resolve(
               __dirname,
               "src",
               "pages",
-              url.substring(1)
+              relativePath
             );
             if (fs.existsSync(potentialPath)) {
-              req.url = `/minh-portfolio/pages/${url.substring(1)}/`;
+              req.url = `/minh-portfolio/pages/${relativePath}/`;
             }
           }
 
@@ -180,11 +196,14 @@ export default defineConfig({
         resolve(__dirname, "src/partials"),
         resolve(__dirname, "src/layouts"), // Thêm cả layouts vào đây để dễ quản lý
       ],
-    context() {
+      context(pageData) {
         return {
-          homeData
+          baseUrl: base,
+          homeData,
+          ...pageData,
         };
       },
+      helpers: Helpers,
     }),
     tailwindcss(),
   ],
@@ -196,6 +215,9 @@ export default defineConfig({
       output: {
         // Cấu hình để output ra thư mục gốc của project/dist
         dir: resolve(__dirname, "dist"),
+        entryFileNames: `assets/[name]-[hash].js`,
+        chunkFileNames: `assets/[name]-[hash].js`,
+        assetFileNames: `assets/[name]-[hash].[ext]`,
       },
     },
     // Đảm bảo thư mục build nằm ở gốc project
@@ -206,5 +228,4 @@ export default defineConfig({
     port: 3000,
     outDir: resolve(__dirname, "dist"),
   },
-
 });

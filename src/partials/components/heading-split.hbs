@@ -1,0 +1,5 @@
+{{!-- <h1 split-text="" class="heading-style-huge text-color-white text-align-center"> --}}
+    {{#each (split text)}}<span class="letter-{{plusOne @index}}" style="{{default ../transform " transform:translate3d(0px, 100%, 0px);"}}">
+        {{#if (isSpace this)}}&nbsp;{{else}}{{this}}{{/if}}
+    </span>{{/each}}
+{{!-- </h1> --}}

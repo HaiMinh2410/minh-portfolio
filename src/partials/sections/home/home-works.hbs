@@ -1,120 +1,70 @@
 <section class="home-about">
   <div class="padding-horizontal padding-small">
     <div class="grid-large">
-      <div
-        id="w-node-_5c3f8f70-646c-b32e-c283-d182c9b391c4-1cecfb8f"
-        class="padding-vertical padding-xlarge"
-      >
-        <div
-          id="w-node-_5c3f8f70-646c-b32e-c283-d182c9b391c0-1cecfb8f"
-          class="home-work-block"
-        >
+      <div id="w-node-_5c3f8f70-646c-b32e-c283-d182c9b391c4-1cecfb8f" class="padding-vertical padding-xlarge">
+        <div id="w-node-_5c3f8f70-646c-b32e-c283-d182c9b391c0-1cecfb8f" class="home-work-block">
           <div class="home-work-top">
+
             <div class="home-service-intro">
               <div class="text-size-large text-align-center">
                 Although still early in my career, I’ve gained hands-on
                 experience working on projects that span from small-scale
                 websites to business-focused applications
               </div>
-              <a href="/works" class="button w-inline-block"><div
-                  id="nowThis"
-                  thatTextSplit="hoverTarget"
-                  base="20%"
-                  class="clip"
-                >
-                  <div class="hover-text">
-                    <div class="text-size-xsmall">View my portfolio</div>
-                  </div>
-                  <div class="hover-text bottom-hover-text">
-                    <div class="text-size-xsmall">View my portfolio</div>
-                  </div>
-                </div></a>
+              {{> components/connect-button
+              page="works"
+              text="View my portfolio"
+              }}
             </div>
+
           </div>
           <div class="home-work-bottom">
             <div class="home-work-list w-dyn-list">
-              <div
-                data-w-id="1942688e-2c45-8d2b-5bec-1c1493592355"
-                role="list"
-                class="home-work-cms w-dyn-items"
-              >
+              <div data-w-id="1942688e-2c45-8d2b-5bec-1c1493592355" role="list" class="home-work-cms w-dyn-items">
                 {{#each homeData.projects}}
-                  <div
-                    thatTextSplit="onHover"
-                    data-w-id="1942688e-2c45-8d2b-5bec-1c1493592356"
-                    role="listitem"
-                    class="w-dyn-item"
-                  >
-                    <!-- THAY ĐỔI URL Ở ĐÂY -->
-                    <a
-                      data-w-id="54eb8553-1f76-4eab-2c33-f3a2b2f13857"
-                      href="/projects/{{this.slug}}"
-                      class="work-list-item w-inline-block"
-                    ><div class="work-list-grid">
-                        <div
-                          id="nowThis"
-                          thatTextSplit="hoverTarget"
-                          base="100%"
-                          class="work-list-title w-node-_01521a5e-18ee-4a67-e5ed-a483cfb6ffb0-1cecfb8f"
-                        >
-                          <h3 class="heading-style-h3 text-color-white">
-                            {{this.name}}
-                          </h3>
-                        </div>
-                        <div
-                          id="nowThis"
-                          thatTextSplit="hoverTarget"
-                          base="20%"
-                          class="clip w-node-a7ada0ce-0806-a150-89a5-c3732ea87a1e-1cecfb8f"
-                        >
-                          <div class="hover-text">
-                            <div
-                              class="text-size-tiny text-style-allcaps text-color-white"
-                            >
-                              {{this.category}}
-                            </div>
-                          </div>
-                          <div class="hover-text bottom-hover-text">
-                            <div
-                              class="text-size-tiny text-style-allcaps text-color-white"
-                            >
-                              {{this.category}}
-                            </div>
+                <div thatTextSplit="onHover" data-w-id="1942688e-2c45-8d2b-5bec-1c1493592356" role="listitem"
+                  class="w-dyn-item">
+                  <!-- THAY ĐỔI URL Ở ĐÂY -->
+                  <a data-w-id="54eb8553-1f76-4eab-2c33-f3a2b2f13857" href="{{../baseUrl}}projects/{{this.slug}}"
+                    class="work-list-item w-inline-block">
+                    <div class="work-list-grid">
+                      <div id="nowThis" thatTextSplit="hoverTarget" base="100%"
+                        class="work-list-title w-node-_01521a5e-18ee-4a67-e5ed-a483cfb6ffb0-1cecfb8f">
+                        <h3 class="heading-style-h3 text-color-white">
+                          {{this.name}}
+                        </h3>
+                      </div>
+                      <div id="nowThis" thatTextSplit="hoverTarget" base="20%"
+                        class="clip w-node-a7ada0ce-0806-a150-89a5-c3732ea87a1e-1cecfb8f">
+                        <div class="hover-text">
+                          <div class="text-size-tiny text-style-allcaps text-color-white">
+                            {{this.category}}
                           </div>
                         </div>
-                        <div
-                          id="w-node-_24cff470-c792-5f36-a823-d03f369a595f-1cecfb8f"
-                          class="list-image"
-                        >
-                          <div class="list-image-item">
-                            <div
-                              data-w-id="d3eda697-e370-26c6-3aa2-dd1bdc02ade0"
-                              class="list-image-height"
-                            >
-                              <img
-                                loading="lazy"
-                                data-w-id="c5f91401-47e6-6701-dc02-daf3e6f613a3"
-                                alt="{{this.name}} project image"
-                                src="{{this.bodyItems.0.image}}"
-                                class="image-fill"
-                              />
-                            </div>
+                        <div class="hover-text bottom-hover-text">
+                          <div class="text-size-tiny text-style-allcaps text-color-white">
+                            {{this.category}}
                           </div>
                         </div>
                       </div>
-                      <div class="line">
-                        <div
-                          style="transform: translate3d(-100%, 0, 0);"
-                          class="line-fill"
-                        ></div></div></a>
-                  </div>
+                      <div id="w-node-_24cff470-c792-5f36-a823-d03f369a595f-1cecfb8f" class="list-image">
+                        <div class="list-image-item">
+                          <div data-w-id="d3eda697-e370-26c6-3aa2-dd1bdc02ade0" class="list-image-height">
+                            <img loading="lazy" data-w-id="c5f91401-47e6-6701-dc02-daf3e6f613a3"
+                              alt="{{this.name}} project image" src="{{this.bodyItems.0.image}}" class="image-fill" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="line">
+                      <div style="transform: translate3d(-100%, 0, 0);" class="line-fill"></div>
+                    </div>
+                  </a>
+                </div>
                 {{/each}}
               </div>
             </div>
-            <div
-              data-w-id="fa0d9330-b467-34c3-6a7e-e37a46349075"
-              class="line line-wrap_topleft"
-            >
+            <div data-w-id="fa0d9330-b467-34c3-6a7e-e37a46349075" class="line line-wrap_topleft">
               <div class="line-fill"></div>
             </div>
           </div>
